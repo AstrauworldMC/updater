@@ -1,6 +1,6 @@
 import os
-import platform
 import time
+import ssl
 import tkinter as tk
 from PyQt5 import QtGui
 from appdirs import *
@@ -16,6 +16,8 @@ from tkinter.font import BOLD, Font
 OS_NAME, OS_ARCH = detect_system_architecture() # Linux: Linux | Mac: Darwin | Windows: Windows
 VERSION:str = "2.0.0" # TODO Changer la version
 isException:bool = False
+
+ssl._create_default_https_context = ssl._create_unverified_context
 
 def resource_path(relative_path:str):
     try:
@@ -176,7 +178,7 @@ def updateLibs():
 
     for lib in libsExtFiles:
         if os.path.isfile(os.path.join(libsDir, lib["path"])):
-            if lib["sha1"]!=hashlib.sha1(open(os.path.join(libsDir, lib["path"]), "rb").read()).hexdigest(): # TODO SHA1
+            if lib["sha1"]!=hashlib.sha1(open(os.path.join(libsDir, lib["path"]), "rb").read()).hexdigest():
                 urllib.request.urlretrieve(lib["downloadURL"], os.path.join(libsDir, lib["path"]))
         else:
             with open(os.path.join(libsDir, lib["path"]), "w") as temp:
@@ -364,6 +366,10 @@ def main(e):
         else:
             println("OS non supporté")
 
+        try:
+            os.makedirs(astrauworldDir)
+        except OSError:
+            pass
         println("Astrauworld Launcher dir: " + astrauworldDir)
 
         try:
