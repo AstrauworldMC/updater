@@ -158,9 +158,9 @@ def updateJar():
                 pass
             raise Exception("Problème lors du téléchargement de la mise à jour du launcher")
         println("jar downloaded")
-        with open(newPropertiesDir, "w") as newProps:
-            currentProps = open(currentPropertiesDir, "r")
-            newProps.write(currentProps.read())
+        with open(currentPropertiesDir, "w") as currentProps:
+            newProps = open(newPropertiesDir, "r")
+            currentProps.write(newProps.read())
     else:
         println("Dernière version détectée")
 
